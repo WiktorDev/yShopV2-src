@@ -1,0 +1,36 @@
+<%- include('../includes/sidebar'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Twoje konto</h1>
+    <br><br><br>
+    <div class="flex">
+        <div class="flex-1 ..." style="margin: 40px">
+            <div class="card text-center shadow-2xl">
+                <div class="card-body">
+                    <h2 class="card-title">Zmien haslo</h2> 
+                    <form action="/panel/account/changepass" method="post">
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="password" placeholder="Stare haslo" class="input input-bordered" name="old_password">
+                              </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="password" placeholder="Nowe haslo" class="input input-bordered" name="new_password">
+                              </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="password" placeholder="Powtorz haslo" class="input input-bordered" name="newpass_repeat">
+                              </div>
+                        </div>
+                        <br>
+                        <button class="btn btn-wide btn-sm">Zmien haslo</button>
+                    </form>
+                </div>
+            </div> 
+        </div>
+
+      </div>
+</main>
+<%- include('../includes/footer'); -%>

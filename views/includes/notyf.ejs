@@ -1,0 +1,29 @@
+<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+<script>
+  var notyf = new Notyf();
+</script>
+<% if (messages.error) { %>
+  <script>
+    notyf.error({
+        message: '<%- messages.error %>',
+        dismissible: true,
+        position: {
+          x: 'right',
+          y: 'top',
+        },
+    }) 
+  </script>
+<% } %>
+<% if (messages.success) { %>
+  <script>
+    notyf.success({
+        message: '<%- messages.success %>',
+        dismissible: true,
+        position: {
+          x: 'right',
+          y: 'top',
+        },
+    }) 
+  </script>
+<% } %>

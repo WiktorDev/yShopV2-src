@@ -1,0 +1,47 @@
+<%- include('../../includes/sidebar'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Utworz zgloszenie</h1>
+    <br>
+    <div class="flex">
+        <div class="flex-1 ..." style="margin: 40px">
+            <div class="card text-center shadow-2xl">
+                <div class="card-body">
+                    <form class="card-body" action="/panel/tickets/new" method="POST">
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Temat zgloszenia</span>
+                                </label> 
+                                <input type="text" placeholder="Temat zgłoszenia" class="input input-bordered" name="subject" required>
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text">Wybierz kategorie</span>
+                                </label> 
+                                <select class="select select-bordered " name="category" required>
+                                    <option value="1">Blad dzialania sklepu</option> 
+                                    <option value="2">Zapytanie o wspolprace</option> 
+                                    <option value="3">Zapytanie o zmiane szablonu</option>
+                                    <option value="4">Inne zapytanie</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text">Tresc zgloszenia</span>
+                            </label> 
+                            <textarea class="textarea h-24 textarea-bordered" placeholder="Tresc zgloszenia" name="content" required></textarea>
+                        </div>
+                        <div class="card-actions">
+                            <button type="submit" class="btn btn-wide">Wyślij zgłoszenie</button>
+                        </div>
+                    </form>
+                </div>
+            </div> 
+        </div>
+    </div>
+</main>
+<%- include('../../includes/footer'); -%>

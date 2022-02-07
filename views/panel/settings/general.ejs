@@ -1,0 +1,59 @@
+<%- include('../../includes/manage'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Ustawienia ogolne</h1>
+    <div class="flex">
+        <div class="flex-1 ..." style="margin: 40px">
+            <div class="card text-center shadow-2xl">
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <div class="flex-1">
+                          <label>Uwaga! Aby domena działala poprawnie nalezy ustawic rekord CNAME na target <span style="font-weight: bold;">yshop.pl</span></label>
+                        </div>
+                    </div>
+                    <form  class="card-body" action="/panel/manage/<%= result[0].id %>/settings/general" method="POST" name="create">
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Domena" class="input input-bordered" value="<%= result[0].domain %>" name="domain" hidden>
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Nazwa sklepu" class="input input-bordered" value="<%= result[0].title %>" name="name" required>
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="number" placeholder="Ilosc wyswietlanych miejsc w ostatnich zakupach" class="input input-bordered" value="<%= result[0].lastbuyers_count %>" name="last_count" required>
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="url" placeholder="URL WebHooka discord" class="input input-bordered" value="<%= result[0].hook_url %>"  name="webhook_url">
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Tytul embedu (WebHook)" class="input input-bordered" value="<%= result[0].hook_title %>"  name="webhook_title">
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Opis embedu (WebHook)" class="input input-bordered"  value="<%= result[0].hook_content %>" name="webhook_content" >
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Kolor embedu HEX (WebHook)" class="input input-bordered" value="<%= result[0].hook_color %>" name="webhook_color">
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button type="submit" class="btn btn-wide">Zapisz ustawienia</button>
+                        </div>
+                    </form>
+                </div>
+            </div> 
+        </div>
+    </div>
+</main>
+<%- include('../../includes/footer'); -%>

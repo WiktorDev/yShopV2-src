@@ -1,0 +1,29 @@
+<%- include('../includes/manage'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Zarzadzasz sklepem o id: <%= result[0].id %></h1>
+    <br><br><br>
+    <div class="flex">
+        <div class="flex-1" style="margin: 40px">
+          <div class="card text-center shadow-2xl"style="border: 2px solid red; " >
+            <div class="card-body" >
+              <h2 class="card-title">Niebezpieczne</h2> 
+              <p>Uwaga! Operacji usuniecia sklepu nie da sie cofnac!</p> 
+              <div class="justify-center card-actions">
+                <label for="my-modal-2" class="btn btn-error">Usun sklep</label>
+                <input type="checkbox" id="my-modal-2" class="modal-toggle"> 
+                <div class="modal">
+                  <div class="modal-box">
+                    <h1 style="text-align:center; font-size: 30px;">Usuwanie sklepu</h1><br>
+                    <p>Czy napewno chcesz usunac sklep?</p><br>
+                    <a href="/panel/manage/<%= result[0].id %> /action/delshop" class="btn btn-success">Tak</a> 
+                    <label for="my-modal-2" class="btn btn-error">Nie</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</main>
+<%- include('../includes/footer'); -%>

@@ -1,0 +1,83 @@
+<%- include('../includes/manage'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Lista voucherów</h1>
+    <br>
+    <center><label for="my-modal-2" class="btn btn-primary modal-button">Dodaj voucher</label> </center>
+    <input type="checkbox" id="my-modal-2" class="modal-toggle"> 
+    <br>
+    <div class="modal">
+        <div class="modal-box">
+            <form  action="/panel/manage/<%= result[0].id %>/addvoucher" method="POST">
+                <h1 style="text-align:center; font-size: 30px;">Dodawanie vouchera</h1><br>
+                <div class="w-full mb-2">
+                    <select class="select select-bordered w-full" name="product">
+                        <option disabled="disabled" selected="selected">Wybierz produkt</option>
+                        <% products.forEach(function(product){ %>
+                          <option value="<%= product.productID %>"><%= product.name %> </option>
+                        <% }) %> 
+                    </select>
+                </div>
+                <div class="w-full mb-2">
+                    <div class="form-control">
+                        <input type="text" placeholder="Kod vouchera (opcjonalnie)" class="input input-bordered" name="code" >
+                    </div>
+                </div>
+                <div class="modal-action">
+                  <button  type="submit" class="btn btn-primary">Dodaj</button> 
+                  <label for="my-modal-2" class="btn">Wyjdz</label>
+              </div>
+            </form>
+        </div>
+    </div>
+    <div class="flex">
+      <div class="flex-1 ..." style="margin: 40px">
+        <div class="card text-center shadow-2xl">
+            <div class="card-body">
+                <div class="overflow-x-auto ">
+                    <% if(!vouchers[0]){ %>
+                        <div class="alert alert-error">
+                            <div class="flex-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+                              </svg> 
+                              <label>W tym sklepie nie ma utworzonych zadnych voucherow!</label>
+                            </div>
+                        </div>
+                      <% }else{ %>
+                        <table class="table w-full ">
+                            <thead  class="bg-gray-100">
+                              <tr>
+                                <th>Kod vouchera</th> 
+                                <th>ID produktu</th>
+                                <th>Data utworzenia</th>
+                                <th>Data uzycia</th>
+                                <th>nick</th>
+                              </tr>
+                            </thead> 
+                            <tbody >
+                              <% vouchers.forEach(function(data){ %>
+                              <tr style="border-color: red;">
+                                <td><%= data.voucherCode %></td> 
+                                <td><%= data.productID %></td>
+                                <td><% var txt = data.createDate %><% var timestamp = moment.unix(txt.substring(0, txt.length - 3)) %><%- timestamp.locale("pl").format('lll') %> </td>
+                                <% if(data.used == true){ %>
+                                  <td><div class="badge badge-success"><% var txt = data.useDate %><% var timestamp = moment.unix(txt.substring(0, txt.length - 3)) %><%- timestamp.locale("pl").format('lll') %> </div></td>
+
+                                <% }else{ %>
+                                  <td><div class="badge badge-error">NIE WYKORZYSTANO</div></td>
+                                 <% } %> 
+                                <td><%= data.nick %> </td>
+                              </tr>
+                              <% }) %>
+                            </tbody>
+                          </table>
+                    <% } %> 
+                </div>
+            </div>
+        </div> 
+      </div>
+    </div>
+</main>
+
+<%- include('../includes/footer'); -%>

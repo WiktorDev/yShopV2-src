@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html  x-data="data()" data-theme="light" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel</title>
+    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@0ac23ca/css/all.css" rel="stylesheet" type="text/css" />
+    <link href="/css/tailwind.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/daisyui.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/png" href="/img/dash-icon.png">
+    <script src="/js/alpine.min.js" defer></script>
+    <script src="/js/init-alpine.js"></script>
+    <script async defer data-website-id="242752ad-da4f-445d-928b-0ff281a1c0f7" src="https://umami.yshop.pl/umami.js"></script>
+  </head>
+  <body>
+    <div class="flex h-screen bg-gray-100">
+      <aside class="z-20 hidden w-64 shadow-2xl  bg-white md:block">
+        <div class="py-4 text-gray-500">
+          <a class="ml-6 text-lg  text-gray-800 dark:text-gray-200" href="#">yShop v2 <sup>beta 0.1</sup></a>
+          <ul class="mt-6">
+            <li class=" px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel">
+                <i class="fal fa-home"></i>
+                <span class="ml-4">Panel</span>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/addshop">
+                <i class="fal fa-plus-circle"></i>
+                <span class="ml-4">Dodaj sklep</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/announcements" style="pointer-events: none;">
+                <i class="fal fa-bullhorn"></i>
+                <span class="ml-4">Powiadomienia <div class="badge badge-error">SOON</div></span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <button class="inline-flex items-center justify-between w-full  hover:text-gray-800" @click="togglePagesMenu">
+                <span class="inline-flex items-center">
+                  <i class="fal fa-ticket"></i>
+                  <span class="ml-4">Support</span>
+                </span>
+              </button>
+              <template x-if="isPagesMenuOpen">
+                <ul class="p-2 mt-2 space-y-2 text-gray-500 bg-gray-50" aria-label="submenu">
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/tickets">Tickety</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/tickets/new">Utworz Ticket</a>
+                  </li>
+                </ul>
+              </template>
+            </li>
+
+          </ul>
+        </div>
+      </aside>
+      <aside class="fixed inset-y-0 z-20 w-64 mt-16 bg-white" x-show="isSideMenuOpen" x-transition:enter="transition ease-in-out duration-150" x-transition:enter-start="opacity-0 transform -translate-x-20"x-transition:enter-end="opacity-100"x-transition:leave="transition ease-in-out duration-150"x-transition:leave-start="opacity-100"x-transition:leave-end="opacity-0 transform -translate-x-20"@click.away="closeSideMenu">
+        <div class="text-gray-500">
+          <ul class="mt-6">
+            <li class=" px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel">
+                <i class="fal fa-home"></i>
+                <span class="ml-4">Panel</span>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/addshop">
+                <i class="fal fa-plus-circle"></i>
+                <span class="ml-4">Dodaj sklep</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/announcements">
+                <i class="fal fa-bullhorn"></i>
+                <span class="ml-4">Powiadomienia</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <button class="inline-flex items-center justify-between w-full  hover:text-gray-800" @click="togglePagesMenu">
+                <span class="inline-flex items-center">
+                  <i class="fal fa-ticket"></i>
+                  <span class="ml-4">Support</span>
+                </span>
+              </button>
+              <template x-if="isPagesMenuOpen">
+                <ul class="p-2 mt-2 space-y-2 text-gray-500 bg-gray-50" aria-label="submenu">
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/tickets">Tickety</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/tickets/new">Utworz Ticket</a>
+                  </li>
+                </ul>
+              </template>
+            </li>
+
+          </ul>
+        </div>
+      </aside>
+      <div class="flex flex-col flex-1">
+        <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+          <div class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
+            <div class="text-sm breadcrumbs">
+              <ul>
+                <li>
+                  <a><i class="fal fa-home pr-3"></i>Panel</a>
+                </li>
+                <% if(pageName == 'Dodawanie' || pageName == 'Lista'){ %>
+                  <li>
+                    <a>Zgloszenia</a>
+                  </li> 
+                <% } %> 
+                <li>
+                  <a><%= pageName %> </a>
+                </li> 
+              </ul>
+            </div>
+            
+            <button class="p-1 -ml-1 mr-5 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"@click="toggleSideMenu"aria-label="Menu">
+            <i class="fas fa-bars"></i>
+            </button>
+            <div class="flex justify-center flex-1 lg:mr-32">
+            </div>
+            <ul class="flex items-center flex-shrink-0 space-x-6">
+              <li class="relative">
+                <button class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"  @click="toggleProfileMenu" @keydown.escape="closeProfileMenu" aria-label="Account" aria-haspopup="true">
+                  <img class="object-cover w-8 h-8 rounded-full"src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" alt=""aria-hidden="true"/>
+                </button>
+                <template x-if="isProfileMenuOpen">
+                  <ul class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700" aria-label="submenu">
+                    <li class="flex">
+                      <a href="/panel/account" class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"href="#">
+                        <i class="far fa-user pr-3"></i>
+                        <span>Profil</span>
+                      </a>
+                    </li>
+                    <li class="flex">
+                      <a
+                        class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                        href="/auth/logout"
+                      >
+                      <i class="fal fa-sign-out pr-3"></i>
+                        <span>Wyloguj</span>
+                      </a>
+                    </li>
+                  </ul>
+                </template>
+              </li>
+            </ul>
+          </div>
+        </header>
+        <%- include('./notyf'); -%>

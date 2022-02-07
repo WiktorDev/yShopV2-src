@@ -1,0 +1,180 @@
+<%- include('../includes/manage'); -%>
+<link rel="stylesheet" href="/css/card.css">
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Lista produktow</h1>
+    <% if(!products[0]){ %>
+        <div class="alert alert-error" style="margin: 40px">
+            <div class="flex-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+              </svg> 
+              <label>W tym sklepie nie ma jeszcze zadnych produktow! Mozesz dodac je <a href="/panel/manage/<%= result[0].id %>/addproduct " style="color: blue;">tutaj</a></label>
+            </div>
+        </div>
+      <% }%>
+    <br><br>
+    <div class="cards">
+        <% products.forEach(function(product){ %>
+            <div class="card ">
+                <div class="card__icon"><%= product.name %> </div>
+                <h2>Opis: <b><%= product.description %> </b><br>Ilosc zakupow: <b><%= product.buyCount %></b>
+                    <% if(product.type == "bezsuw"){ %>
+                        <br>Suwak: <b>OFF</b></h2>
+                    <% }else { %>
+                        <br>Suwak: <b>ON</b></h2>
+                   <%  }%> 
+                   <br>
+                <img src="<%= product.image %> " alt="Nie mozna wczytac obrazu!" width="200px" class="card__exit">
+                
+                <div class="card-actions">
+
+                    <label for="my-modal-<%= product.productID %>" class="btn btn-primary">Edytuj</label> 
+                </div>
+                <br>
+            </div>
+            <form action="/panel/manage/<%= product.shopID %>/editproduct/<%= product.productID %> " method="post">
+                <input type="checkbox" id="my-modal-<%= product.productID %>" class="modal-toggle"> 
+                <div class="modal">
+                  <div class="modal-box">
+                    <h1 style="text-align: center; font-size: 30PX;">Edycja przedmiotu</h1>
+                    <br>
+                    <div class="w-full mb-2">
+                      <div class="form-control">
+                          <input type="text" placeholder="Nazwa" class="input input-bordered" value="<%= product.name %> " name="edit_name">
+                      </div>
+                    </div>
+                    <div class="w-full mb-2">
+                        <div class="form-control">
+                            <input type="url" placeholder="Zdjecie" class="input input-bordered" value="<%= product.image %> " name="edit_image">
+                        </div>
+                    </div>
+                    <div class="w-full mb-2">
+                        <div class="form-control">
+                            <input type="text" placeholder="Komenda" class="input input-bordered" value="<%= product.cmd %> " name="edit_cmd">
+                        </div>
+                    </div>
+                    <div class="w-full mb-2">
+                        <div class="form-control">
+                            <textarea class="textarea h-24 textarea-bordered" placeholder="Opis produktu"  name="description"><%= product.description %></textarea>
+                        </div>
+                    </div>
+                    <% if(payment[0].paypal_enable == false && payment[0].lvlupsms_enable == false){ %>
+                        <div class="alert alert-error">
+                            <div class="flex-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+                              </svg> 
+                              <label>Zaden operator platnosci nie jest skonfigurowany! Kliknij <a href="/panel/manage/<%= result[0].id %>/settings/payments" style="color: blue; font-style: italic;">tutaj</a> aby to zmienic</label>
+                            </div>
+                        </div>
+                    <% } %>
+                    <div class="alert alert-info">
+                        <div class="flex-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+                          </svg> 
+                          <label>Aby wylaczyc dana platnosc ustaw wartosc na <b>0</b>, w przypadku SMS wybierz wartosc <b>Wylacz dla tego produktu</b> </label>
+                        </div>
+                    </div>
+                    <br>
+                    <% if (payment[0].paypal_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayPal" class="input input-bordered" value="<%= product.paypal_price %> " name="paypal" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].lvlup_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena Lvlup Others" class="input input-bordered" value="<%= product.lvlup_price %>"name="lvlup" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <!-- <% if (payment[0].lvlupsms_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <select class="select select-bordered w-full" name="lvlup_sms" required>
+                                    <option value="1"> 71480 (1.23 zł)</option>
+                                    <option value="2"> 72480 (2.46 zł)</option>
+                                    <option value="3"> 73480 (3.69 zł)</option>
+                                    <option value="4"> 74480 (4.92 zł)</option>
+                                    <option value="5"> 75480 (6.15 zł)</option>
+                                    <option value="6"> 76480 (7.38 zł)</option>
+                                    <option value="7"> 79480 (11.07 zł)</option>
+                                    <option value="8"> 91400 (17.22 zł)</option>
+                                    <option value="9"> 91900 (23.37 zł)</option>
+                                    <option value="10"> 92022 (24.60 zł)</option>
+                                    <option value="11"> 92521 (30.75 zł)</option>
+                                    <option value="12"> 92550 (30.75 zł)</option>
+                                    <option value="13">Wyłącz dla tego produktu</option>
+                                </select>
+                            </div>
+                        </div>
+                    <% } %> -->
+                    <% if (payment[0].hotpay_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena HotPay" class="input input-bordered" value="<%= product.hotpay_price %> " name="hotpay" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].hotpaypsc_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena HotPay PSC" class="input input-bordered" value="<%= product.hotpaypsc_price %>"name="hotpay_psc" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].hotpaysms_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena HotPay SMS" class="input input-bordered" value="<%= product.hotpaysms_price %>"name="hotpay_sms" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].pbl_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayByLink" class="input input-bordered" value="<%= product.pbl_price %>"name="pbl" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].pblpsc_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayByLink PSC" class="input input-bordered" value="<%= product.pblpsc_price %>"name="pbl_psc" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].pbldb_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayByLink DirectBilling" class="input input-bordered" value="<%= product.pbldb_price %>"name="pbl_db" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].pblsms_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayByLink SMS" class="input input-bordered" value="<%= product.pblsms_price %>"name="pbl_sms" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <br>
+                    <div class="modal-action">
+                        <div data-tip="Kliknij aby usunac produkt" class="tooltip">
+                            <a href="/panel/manage/<%= result[0].id %>/action/delproduct/<%= product.productID %>" class="btn btn-error"><i class="fad fa-trash"></i></a> 
+                        </div>
+                      <button type="submit" class="btn btn-primary">Aktualizuj</button> 
+                      <label for="my-modal-<%= product.productID %>" class="btn">Wyjdz</label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+        <% }) %> 
+    </div>
+</main>
+
+<%- include('../includes/footer'); -%>

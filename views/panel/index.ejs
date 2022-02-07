@@ -1,0 +1,34 @@
+<%- include('../includes/sidebar'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+   <br>
+   <h1 style="text-align:center; font-size: 40px;">Twoje sklepy</h1>
+   <br>
+   <% if(!result[0]){ %>
+    <div class="alert alert-error">
+      <div class="flex-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+        </svg> 
+        <label>Nie masz jeszcze zadnego sklepu! Mozesz go dodac <a style="color: blue;" href="/panel/addshop">tutaj</a></label>
+      </div>
+    </div>
+   <% }else{ %>
+    <% result.forEach(function(result) { %>
+      <div class="flex">
+         <div class="flex-1" style="margin: 40px">
+             <div class="card  shadow-2xl">
+                 <div class="card-body">
+                  <h2 class="card-title">Sklep: <%= result.title %></h2> 
+                  <p>ID sklepu: <%= result.id %> <br> Data utworzenia sklepu: <% var txt = result.createdate %><% var timestamp = moment.unix(txt.substring(0, txt.length - 3)) %><%- timestamp.locale("pl").format('lll') %> </p> 
+                  <div class="card-actions">
+                    <a href="/panel/manage/<%= result.id %>" class="btn btn-primary">Zarzadzaj</a>
+                    <a class="btn btn-success" href="/shop/<%= result.id %>" target="_blank">Otworz</a>
+                  </div>
+                 </div>
+             </div> 
+         </div>
+      </div>
+      <% }); %>
+   <% } %> 
+</main>
+<%- include('../includes/footer'); -%>

@@ -1,0 +1,78 @@
+<%- include('../includes/manage'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Nawigacja</h1>
+    <br>
+    <center><label for="my-modal-2" class="btn btn-primary modal-button">Dodaj link</label> </center>
+    <input type="checkbox" id="my-modal-2" class="modal-toggle"> 
+    <br>
+    <div class="modal">
+        <div class="modal-box">
+            <form  action="/panel/manage/<%= result[0].id %>/addnav" method="POST">
+                <h1 style="text-align:center; font-size: 30px;">Dodawanie nawigacji</h1><br>
+                <div class="w-full mb-2">
+                  <div class="form-control">
+                    <input type="text" placeholder="Nazwa" class="input input-bordered" name="name" required>
+                  </div>
+                </div>
+                <div class="alert alert-info">
+                  <div class="flex-1">
+                    <label>Jezeli chcesz zrobic przekierowanie na inna strone wpisz w pole "Wartos" URL strony. Gdy chcesz zrobic przekierowanie na podstrone yShop wpisz <b>page:nazwa_podstrony</b></label>
+                  </div>
+                </div><br>
+                <div class="w-full mb-2">
+                    <div class="form-control">
+                        <input type="text" placeholder="Wartosc" class="input input-bordered" name="value" required>
+                    </div>
+                </div>
+                <div class="modal-action">
+                  <button  type="submit" class="btn btn-primary">Dodaj</button> 
+                  <label for="my-modal-2" class="btn">Wyjdz</label>
+              </div>
+            </form>
+        </div>
+    </div>
+    <div class="flex">
+      <div class="flex-1 ..." style="margin: 40px">
+        <div class="card text-center shadow-2xl">
+            <div class="card-body">
+                <div class="overflow-x-auto ">
+                    <% if(!navigation[0]){ %>
+                        <div class="alert alert-error">
+                            <div class="flex-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+                              </svg> 
+                              <label>W tym sklepie nie ustawiono nawigacji!</label>
+                            </div>
+                        </div>
+                      <% }else{ %>
+                        <table class="table w-full ">
+                            <thead  class="bg-gray-100">
+                              <tr>
+                                <th>Nazwa</th> 
+                                <th>Wartosc</th>
+                                <th>Data utworzenia</th>
+                                <th>Akcja</th>
+                              </tr>
+                            </thead> 
+                            <tbody >
+                              <% navigation.forEach(function(data){ %>
+                              <tr style="border-color: red;">
+                                <td><%= data.name %></td> 
+                                <td><%= data.value %></td>
+                                <td><% var txt = data.date %><% var timestamp = moment.unix(txt.substring(0, txt.length - 3)) %><%- timestamp.locale("pl").format('lll') %> </td>
+                                <td><a href="/panel/manage/<%= result[0].id %>/action/delnav/<%= data.id %>" class="btn btn-error"><i class="fad fa-trash"></i></a> </td>
+                              </tr>
+                              <% }) %>
+                            </tbody>
+                          </table>
+                    <% } %> 
+                </div>
+            </div>
+        </div> 
+      </div>
+    </div>
+</main>
+
+<%- include('../includes/footer'); -%>

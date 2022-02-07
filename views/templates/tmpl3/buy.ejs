@@ -1,0 +1,97 @@
+<%- include('./nav.ejs') %> 
+<script src="https://ecommerce-tailwindcomponents.netlify.app/assets/build/js/main.js?id=b22be7e4b2fa278725a2" defer></script>
+
+<main class="my-8">
+    <%- include('../../includes/notyf'); %>
+    <div class="container mx-auto px-6" style="margin-top: 5rem;">
+        <div class="md:flex md:items-center">
+            <div class="w-full h-64 md:w-1/2 lg:h-96">
+                <img class="h-full w-full rounded-md max-w-lg mx-auto" src="<%= product[0].image %>"><br>
+                <div class="h-full w-full rounded-md object-cover max-w-lg mx-auto"><%= product[0].description %></div>
+            </div>
+            <div class="w-full max-w-lg mx-auto mt-5 md:ml-8 md:mt-0 md:w-1/2">
+                <div class="flex items-center mt-6">
+                    <form class="mt-8 lg:w-3/4" action="/shop/<%= result[0].id %>/service/<%= product[0].productID %>/payment" method="POST">
+                        <div>
+                            <div class="mt-6">
+                                <% if(product.lvlup_price == '0' && product.paypal_price == '0' && product.hotpay_price == '0' && product.hotpaysms_price == '0' && product.hotpaypsc_price == '0'){ %>
+                                    <div class="alert alert-error">
+                                      <div class="flex-1">
+                                        <label>Administrator sklepu nie ustalil zadnej ceny dla tego produktu!</label>
+                                      </div>
+                                    </div>
+                                <% }else{ %>
+                                    <% if(payment[0].lvlup_enable == true && product[0].lvlup_price != 0){ %>
+                                        <div class="flex items-center justify-between w-full bg-white rounded-md border-2 p-4 focus:outline-none">
+                                            <label class="flex items-center">
+                                                <input type="radio" name="method" value="lvlup" class="form-radio h-5 w-5 text-blue-600"><span class="ml-2 text-sm text-gray-700"><%= payment[0].lvlup_name %></span>
+                                            </label>
+                                            <span class="text-gray-600 text-sm"><%= product[0].lvlup_price %>zł</span>
+                                        </div>
+                                    <% } %> 
+                                    <% if(payment[0].paypal_enable == true && product[0].paypal_price != 0){ %>
+                                        <div class="mt-4 flex items-center justify-between w-full bg-white rounded-md border-2 p-4 focus:outline-none">
+                                            <label class="flex items-center">
+                                                <input type="radio"name="method" value="paypal" class="form-radio h-5 w-5 text-blue-600"><span class="ml-2 text-sm text-gray-700"><%= payment[0].paypal_name %></span>
+                                            </label>
+                                            <span class="text-gray-600 text-sm"><%= product[0].paypal_price %>zł</span>
+                                        </div>
+                                    <% } %>
+                                    <% if(payment[0].hotpay_enable == true && product[0].hotpay_price != 0){ %>
+                                        <div class="mt-4 flex items-center justify-between w-full bg-white rounded-md border-2 p-4 focus:outline-none">
+                                            <label class="flex items-center">
+                                                <input type="radio"name="method" value="hotpay" class="form-radio h-5 w-5 text-blue-600"><span class="ml-2 text-sm text-gray-700"><%= payment[0].hotpay_name %></span>
+                                            </label>
+                                            <span class="text-gray-600 text-sm"><%= product[0].hotpay_price %>zł</span>
+                                        </div>
+                                    <% } %>
+                                    <% if(payment[0].hotpaysms_enable == true && product[0].hotpaysms_price != 0){ %>
+                                        <div class="mt-4 flex items-center justify-between w-full bg-white rounded-md border-2 p-4 focus:outline-none">
+                                            <label class="flex items-center">
+                                                <input type="radio"name="method" value="hotpay_sms" class="form-radio h-5 w-5 text-blue-600"><span class="ml-2 text-sm text-gray-700"><%= payment[0].hotpaysms_name %></span>
+                                            </label>
+                                            <span class="text-gray-600 text-sm"><%= product[0].hotpaysms_price %>zł</span>
+                                        </div>
+                                    <% } %>
+                                    <% if(payment[0].hotpaypsc_enable == true && product[0].hotpaypsc_price != 0){ %>
+                                        <div class="mt-4 flex items-center justify-between w-full bg-white rounded-md border-2 p-4 focus:outline-none">
+                                            <label class="flex items-center">
+                                                <input type="radio"name="method" value="hotpay_psc" class="form-radio h-5 w-5 text-blue-600"><span class="ml-2 text-sm text-gray-700"><%= payment[0].hotpaypsc_name %></span>
+                                            </label>
+                                            <span class="text-gray-600 text-sm"><%= product[0].hotpaypsc_price %>zł</span>
+                                        </div>
+                                    <% } %>
+                                    <% if(payment[0].pbl_enable == true && product[0].pbl_price != 0){ %>
+                                        <div class="mt-4 flex items-center justify-between w-full bg-white rounded-md border-2 p-4 focus:outline-none">
+                                            <label class="flex items-center">
+                                                <input type="radio" name="method" value="pbl" class="form-radio h-5 w-5 text-blue-600"><span class="ml-2 text-sm text-gray-700"><%= payment[0].pbl_name %></span>
+                                            </label>
+                                            <span class="text-gray-600 text-sm"><%= product[0].pbl_price %>zł</span>
+                                        </div>
+                                    <% } %>
+                                <% } %> 
+                                <% if(product[0].type == "suwak"){ %>
+                                    <div x-data="{total_value:50}" class="mt-4 flex items-center justify-between w-full bg-white rounded-md border p-4 focus:outline-none">
+                                        <input type="range" min="<%= product.mincount %>" max="<%= product.maxcount %>" x-model="total_value" name="count">
+                                        <span class="text-gray-600 text-sm"><input type="text"  x-model="total_value" class="w-6" name="" id="" disabled></span>
+                                    </div>
+                                <% } %>
+                                <input type="text" name="nick" class="mt-4 text-blue-600 items-center justify-between w-full bg-white rounded-md border p-4 focus:outline-none" placeholder="Twoj nick" required>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-8">
+                            <a href="/shop/<%= result[0].id %> " class="flex items-center px-3 py-2  text-sm font-medium">Powrot</a>
+                            <button class="flex items-center px-3 py-2 bg-green-500 text-white text-sm font-medium rounded focus:outline-none hover:bg-green-700">
+                                <span>Platnosc</span>
+                                <svg class="h-5 w-5 mx-2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+      </div>
+    </body>
+</html>

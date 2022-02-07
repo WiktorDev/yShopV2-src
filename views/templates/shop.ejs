@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <title><%= result[0].title %></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/shopss.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.10.0/dist/full.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
+    <script async defer data-website-id="242752ad-da4f-445d-928b-0ff281a1c0f7" src="https://umami.yshop.pl/umami.js"></script>
+    <style>
+        body {
+          background-image: url('/img/img1.jpg');
+            background-position: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+    <link rel="stylesheet" href="<%= result[0].shopcss %>">
+  </head>
+  <body>
+    <%- include('../includes/notyf'); -%>
+    <br><div class="text-center "><h1 style="font-size:50px; color:#2c2d35">Sklep <%= result[0].title %></h1></div>
+
+    <br>
+    <% if(result[0].srv_status == false){ %>
+      <div class="alert alert-error" style="margin-left: 14.5rem; margin-right: 15rem; background-color: rgb(223, 80, 80); color: white;">
+        <div class="flex-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+          </svg> 
+          <label>Nie mozna polaczyc sie z serwerem! Skontaktuj sie z administratorem sklepu</label>
+        </div>
+      </div>
+    <% } %> 
+    <br>
+    <center>
+      <div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box" style="margin-left: 14.5rem; margin-right: 15rem;">
+        <div class="px-2 mx-2 navbar-start">
+          <span class="text-lg font-bold"><%= result[0].title %></span>
+        </div> 
+        <div class="hidden px-2 mx-2 navbar-center lg:flex">
+          <div class="flex items-stretch">
+            <% nav.forEach(function(data){ %>
+              <a href="<% if(data.value.startsWith('page:')){%> /shop/<%= result[0].id %>/page/<%= data.value.replace('page:', '') %> <% }else{ %> <%= data.value %> <% } %> " class="btn btn-ghost btn-sm rounded-btn"><%= data.name %></a> 
+            <% }) %> 
+          </div>
+        </div> 
+        <div class="navbar-end">
+            <a href="/panel/manage/<%= result[0].id %> " class="btn btn-square btn-ghost" target="_blank"target="_blank"><i class="fas fa-user-cog"></i></a> 
+        </div>
+      </div>
+    </center>
+    <div class="own-container">
+     <div class="widgets">
+        <div class="card" style="width: 21rem;">
+            <div class="card bordered" style="background-color:#2c2d35">
+                <div class="card-body">
+                  <h2 class="card-title" style="text-align: center">Status serwera</h2> 
+                  <hr>
+                  <br>
+                  <% if(result[0].srv_status == false){ %>
+                    <center><br><h2 style="color: red">OFFLINE</h2><p>Gracze online: -/-</p><br></center>
+                  <% }else{ %>
+                    <center><br><h2 style="color: green;">ONLINE</h2><p>Gracze online: <%= result[0].srv_online %>/<%= result[0].srv_max %></p><br></center>
+                  <% } %> 
+                </div>
+              </div> 
+            </div>
+            <div class="card" style="width: 21rem; max-width: 100%;">
+              <div class="card bordered" style="background-color:#2c2d35">
+                <div class="card-body">
+                  <h2 class="card-title" style="text-align: center">Voucher</h2> 
+                  <hr>
+                  <div style="color:#2c2d35">.</div>
+                  <form action="https://yshop.pl/shop/<%= result[0].id %>/usevoucher" method="POST">
+                    <div class="w-full mb-2">
+                      <div class="form-control">
+                          <input type="text" placeholder="Nick" class="input input-bordered" name="voucher_nick" required>
+                      </div>
+                    </div>
+                    <div class="w-full mb-2">
+                      <div class="form-control">
+                          <input type="text" placeholder="Kod vouchera" class="input input-bordered" name="voucher_code" required>
+                      </div>
+                    </div>
+                    <div class="justify-center card-actions">
+                      <% if(result[0].srv_status == false){ %>
+                        <button class="btn btn-primary" disabled>Aktywuj</button>
+                      <% }else{ %>
+                        <button class="btn btn-primary">Aktywuj</button>
+                      <% } %> 
+                    </div>
+                  </form>
+                </div>
+              </div> 
+            </div>
+            <div class="card" style="width: 21rem;">
+              <div class="card bordered" style="background-color:#2c2d35">
+                <div class="card-body">
+                  <h2 class="card-title" style="text-align: center">Ostatni kupujący</h2> 
+                  <hr>
+                  <div style="color:#2c2d35">.</div>
+                  <% logs.forEach(function(pay){ %>
+                      <div class="purchase">
+                        <img src="https://minotar.net/avatar/<%= pay.nick %>/40" style="margin: 5px;">
+                        <div class="last_purchase_info" >
+                          <span><b><%= pay.nick %> </b></span>
+                          <span style="margin-top: 22px;"><%= pay.productName %> </span>
+                        </div>
+                      </div>
+                  <% }) %> 
+                </div>
+              </div> 
+            </div>
+        </div>
+        <div class="shop-cards display-inline-flex">
+          <% products.forEach(function(product){ %>
+            <div class="">
+              <div class="card lg:card-side bordered" style="width: 67rem;background-color:#2c2d35" >
+                <img src="<%= product.image %>" class="w-16 md:w-32 lg:w-48">
+                <div class="card-body">
+                  <h2 class="card-title"><%= product.name %></h2> 
+                  <p><%= product.description %></p> 
+                  <div class="card-actions" style="margin-top: 10px;">
+                    <% if(result[0].srv_status == false){ %>
+                      <label for="my-modal-<%= product.productID %>" class="btn btn-wide btn-primary center modal-button" disabled>Zakup</label> 
+                    <% }else{ %>
+                      <label for="my-modal-<%= product.productID %>" class="btn btn-wide btn-primary center modal-button" >Zakup</label> 
+                    <% } %> 
+                  </div>
+                  <form action="https://yshop.pl/shop/<%= result[0].id %>/service/<%= product.productID %>/payment" method="post">
+                    <input type="checkbox" id="my-modal-<%= product.productID %>" class="modal-toggle"> 
+                    <div class="modal">
+                      <div class="modal-box">
+                        <h1 style="text-align: center; font-size: 30PX;">Kupno przedmiotu</h1>
+                        <p style="text-align: center; font-size: 20px">Kupujesz: <%= product.name %></p>
+                        <br>
+                        <div class="w-full mb-2">
+                          <div class="form-control">
+                              <input type="text" placeholder="Nick gracza" class="input input-bordered" name="nick" required>
+                          </div>
+                          <% if(product.type == "suwak"){ %>
+                            <br>
+                            <div id="demo"></div>
+                            <div class="form-control">
+                              <input type="range" max="<%= product.maxcount %>" min="<%= product.mincount %>" class="range range-primary" name="count" id="count"> 
+                            </div>
+                          <% } %>
+                        </div>
+                        <br>
+                        <div class=" form-control">
+                          <% if(product.lvlupsms_price == '13' && product.lvlup_price == '0' && product.paypal_price == '0' && product.hotpay_price == '0' && product.hotpaysms_price == '0' && product.hotpaypsc_price == '0'){ %>
+                            <div class="alert alert-error">
+                              <div class="flex-1">
+                                <label>Administrator sklepu nie ustalil zadnej ceny dla tego produktu!</label>
+                              </div>
+                            </div>
+                          <% } %> 
+                          <% if(payment[0].lvlupsms_enable == true){ %>
+                            <% if(product.lvlupsms_price == '13' || product.lvlupsms_price == '0'){ %>
+                              <% }else{ %>
+                                <div class="form-control">
+                                  <label class="cursor-pointer label">
+                                      <span class="label-text"><%= payment[0].lvlupsms_name %> <b><% var price = '{'+product.lvlupsms_price+'}' %> <%= price.replace('{1}','1.23').replace('{2}', '2.46').replace('{3}', '3.69').replace('{4}', '4.92').replace('{5}', '6.15').replace('{6}', '7.38').replace('{7}', '11.07').replace('{8}', '17.22').replace('{9}', '23.37').replace('{10}', '24.60').replace('{11}', '30.75').replace('{12}', '30.75') %>  </b></span> 
+                                      <input type="radio" name="opt" class="radio" value="lvlup_sms">
+                                  </label>
+                                </div> 
+                            <% } %> 
+                          <% } %>
+                          <% if(payment[0].lvlup_enable == true){ %>
+                            <% if(product.lvlup_price != '0'){ %>
+                              <div class="form-control">
+                                <label class="cursor-pointer label">
+                                  <span class="label-text"><%= payment[0].lvlup_name %> <b><%= product.lvlup_price %> </b></span> 
+                                  <input type="radio" name="opt" class="radio" value="lvlup">
+                                </label>
+                              </div> 
+                            <% } %> 
+                          <% } %>
+                          <% if(payment[0].paypal_enable == true){ %>
+                            <% if(product.paypal_price != '0'){ %>
+                              <div class="form-control">
+                                <label class="cursor-pointer label">
+                                  <span class="label-text"><%= payment[0].paypal_name %> <b><%= product.paypal_price %> </b></span> 
+                                  <input type="radio" name="opt" checked="checked" class="radio" value="paypal">
+                                </label>
+                              </div> 
+                            <% } %> 
+                          <% } %>
+                          <% if(payment[0].hotpay_enable == true){ %>
+                            <div class="form-control">
+                              <label class="cursor-pointer label">
+                                <span class="label-text"><%= payment[0].hotpay_name %> <b><%= product.hotpay_price %> </b></span> 
+                                <input type="radio" name="opt" checked="checked" class="radio" value="hotpay">
+                              </label>
+                            </div> 
+                          <% } %>
+                          <% if(payment[0].hotpaysms_enable == true){ %>
+                            <div class="form-control">
+                              <label class="cursor-pointer label">
+                                <span class="label-text">HotPay SMS <b><%= product.hotpaysms_price %> </b></span> 
+                                <input type="radio" name="opt" checked="checked" class="radio" value="hotpay_sms">
+                              </label>
+                            </div> 
+                          <% } %>
+                          <% if(payment[0].hotpaypsc_enable == true){ %>
+                            <div class="form-control">
+                              <label class="cursor-pointer label">
+                                <span class="label-text"><%= payment[0].hotpaypsc_name %> <b><%= product.hotpaypsc_price %> </b></span> 
+                                <input type="radio" name="opt" checked="checked" class="radio" value="payment_psc">
+                              </label>
+                            </div> 
+                          <% } %>
+                        </div>
+                        <div class="modal-action">
+                          <button type="submit" class="btn btn-primary">Płatność</button> 
+                          <label for="my-modal-<%= product.productID %>" class="btn">Wyjdz</label>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div> 
+            </div>
+          <% }) %>
+        </div>
+      </div>
+      <script>
+        var slider = document.getElementById("count");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+        slider.oninput = function() {
+          output.innerHTML = this.value;
+        }
+      </script>
+      <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<title>CDN</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" rel="stylesheet"/>
+
+<body>
+    <center>
+        <div style="margin-left: 1cm; margin-right: 3cm; margin-top: 7cm;">
+            <div class="row row-cols-1 row-cols-md-2 g-4" style="margin-left: 17cm;">
+                <div class="col">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">yShop.pl CDN server</h5>
+                      <br>
+                      <% if(error == true){ %>
+                      <div class="alert alert-danger" role="alert" style="background-color: rgb(223, 80, 80); color: white;">
+                        Wpisany token jest niepoprawny!
+                    </div>
+                    <% } %>
+                    <br>
+                      <form ref='uploadForm' id='uploadForm' action='/' method='post' encType="multipart/form-data">
+                        <input type="file" class="form-control" id="customFile" name="sampleFile" required/>
+                        <br>
+                        <div class="form-outline mb-4">
+                            <input type="password" id="token" class="form-control" name="token"/>
+                            <label class="form-label" for="token" required>Token</label>
+                          </div>
+                        <button type="submit" class="btn btn-primary btn-block">Wyslij plik</button>
+                    
+                      </form>  
+                    </div>
+                  </div>
+                </div>
+            </div>
+        
+        </div>
+        </center>
+</body>
+<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>

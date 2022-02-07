@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html  x-data="data()" data-theme="light" lang="en" viewsource="no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel</title>
+    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@0ac23ca/css/all.css" rel="stylesheet" type="text/css" />
+    <link href="/css/tailwind.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/daisyui.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" type="image/png" href="/img/dash-icon.png">
+    <script src="/js/alpine.min.js"defer></script>
+    <script src="/js/init-alpine.js"></script>
+    <script async defer data-website-id="242752ad-da4f-445d-928b-0ff281a1c0f7" src="https://umami.yshop.pl/umami.js"></script>
+  </head>
+  <body>
+    <div class="flex h-screen bg-gray-100  dark:bg-gray-900">
+      <aside class="z-20 hidden w-64 overflow-y-auto bg-white shadow-2xl md:block flex-shrink-0">
+        <div class="py-4 text-gray-500 dark:text-gray-400">
+          <a class="ml-6 text-lg  text-gray-800 dark:text-gray-200" href="#">yShop v2 <sup>beta 0.1</sup></a>
+          <ul class="mt-6">
+            <li class="relative px-6 py-3">
+              <a class="inline-flex items-center w-full text-sm hover:text-gray-800 dark:hover:text-gray-200" href="/panel">
+                <i class="far fa-arrow-left"></i>
+                <span class="ml-4">Powrot</span>
+              </a>
+            </li>
+          </ul>
+          <ul>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/products">
+                <i class="fal fa-shopping-cart"></i>
+                <span class="ml-4">Produkty</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+                <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/addproduct">
+                  <i class="fal fa-cart-plus"></i>
+                  <span class="ml-4">Dodaj produkt</span>
+                </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/vouchers">
+                <i class="fal fa-gift-card"></i>
+                <span class="ml-4">Vouchery</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/navigation">
+                <i class="fal fa-map"></i>
+                <span class="ml-4">Nawigacja</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/pages">
+                <i class="fad fa-file"></i>
+                <span class="ml-4">Podstrony</span>
+              </a>
+            </li>
+            <li class="relative px-6 py-3">
+              <button class="inline-flex items-center justify-between w-full  hover:text-gray-800" @click="togglePagesMenu">
+                <span><i class="fal fa-cog"></i><span class="ml-4">Ustawienia</span></span>
+              </button>
+              <template x-if="isPagesMenuOpen">
+                <ul class="p-2 mt-2 space-y-2 text-gray-500 bg-gray-50">
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/general">Ogolne</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/payments">Bramki platnosci</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/appearance">Wyglad</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/connection">Polaczenie</a>
+                  </li>
+                </ul>
+              </template>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/payments">
+                <i class="fal fa-clipboard-list"></i>
+                <span class="ml-4">Logi Platnosci</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/api">
+                <i class="fal fa-code"></i>
+                <span class="ml-4">API</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      <aside
+        class="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white dark:bg-gray-800 md:hidden"
+        x-show="isSideMenuOpen"
+        x-transition:enter="transition ease-in-out duration-150"
+        x-transition:enter-start="opacity-0 transform -translate-x-20"
+        x-transition:enter-end="opacity-100"
+        x-transition:leave="transition ease-in-out duration-150"
+        x-transition:leave-start="opacity-100"
+        x-transition:leave-end="opacity-0 transform -translate-x-20"
+        @click.away="closeSideMenu"
+        @keydown.escape="closeSideMenu"
+      >
+        <div class="py-4 text-gray-500 dark:text-gray-400">
+          <a class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"href="#">
+              yShop v2
+          </a>
+          <ul>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/products">
+                <i class="fal fa-shopping-cart"></i>
+                <span class="ml-4">Produkty</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+                <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/addproduct">
+                  <i class="fal fa-cart-plus"></i>
+                  <span class="ml-4">Dodaj produkt</span>
+                </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/vouchers">
+                <i class="fal fa-gift-card"></i>
+                <span class="ml-4">Vouchery</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/navigation">
+                <i class="fal fa-map"></i>
+                <span class="ml-4">Nawigacja</span>
+              </a>
+            </li>
+            <li class="relative px-6 py-3">
+              <button class="inline-flex items-center justify-between w-full  hover:text-gray-800" @click="togglePagesMenu">
+                <span><i class="fal fa-cog"></i><span class="ml-4">Ustawienia</span></span>
+              </button>
+              <template x-if="isPagesMenuOpen">
+                <ul class="p-2 mt-2 space-y-2 text-gray-500 bg-gray-50">
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/general">Ogolne</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/payments">Bramki platnosci</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/appearance">Wyglad</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/connection">Polaczenie</a>
+                  </li>
+                </ul>
+              </template>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/payments">
+                <i class="fal fa-clipboard-list"></i>
+                <span class="ml-4">Logi Platnosci</span>
+              </a>
+            </li>
+            <li class="px-6 py-3">
+              <a class="inline-flex items-center hover:text-gray-800" href="/panel/manage/<%= result[0].id %>/api">
+                <i class="fal fa-code"></i>
+                <span class="ml-4">API</span>
+              </a>
+            </li>
+            <li class="relative px-6 py-3">
+              <button
+                class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                @click="togglePagesMenu"
+                aria-haspopup="true"
+              >
+                <span class="inline-flex items-center">
+                    <i class="fas fa-cogs"></i>
+                  <span class="ml-4">Ustawienia</span>
+                </span>
+              </button>
+              <template x-if="isPagesMenuOpen">
+                <ul class="p-2 mt-2 space-y-2 text-gray-500 bg-gray-50">
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/general">Ogolne</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/payments">Bramki platnosci</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/appearance">Wyglad</a>
+                  </li>
+                  <li class="px-2 py-1 hover:text-gray-800">
+                    <a class="w-full" href="/panel/manage/<%= result[0].id %>/settings/connection">Polaczenie</a>
+                  </li>
+                </ul>
+              </template>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      <div class="flex flex-col flex-1">
+        <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+          <div class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300">
+            <button class="p-1 -ml-1 mr-5 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"@click="toggleSideMenu"aria-label="Menu">
+              <i class="fas fa-bars"></i>
+              </button>
+            <div class="text-sm breadcrumbs">
+              <ul>
+                <li>
+                  <a href="/panel"><i class="fal fa-home pr-3"></i>Panel</a>
+                </li> 
+                <li>
+                  <a href="/panel/manage/<%= result[0].id %>">Zarzadzanie</a>
+                </li>
+                <% if(pageName == 'Ogolne' || pageName == 'Platnosci' || pageName == 'Wyglad' || pageName == 'Polaczenie'){ %>
+                  <li>
+                    <a>Ustawienia</a>
+                  </li>
+                <% } %> 
+                <li>
+                  <a><%= pageName %> </a>
+                </li>
+              </ul>
+            </div>
+            <div class="flex justify-center flex-1 lg:mr-32">
+            </div>
+            <ul class="flex items-center flex-shrink-0 space-x-6">
+              <li class="relative">
+                <button class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"  @click="toggleProfileMenu" @keydown.escape="closeProfileMenu" aria-label="Account" aria-haspopup="true">
+                  <img class="object-cover w-8 h-8 rounded-full"src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg" alt=""aria-hidden="true"/>
+                </button>
+                <template x-if="isProfileMenuOpen">
+                  <ul class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700" aria-label="submenu">
+                    <li class="flex">
+                      <a  class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"href="#">
+                        <i class="far fa-user pr-3"></i>
+                        <span>Profil</span>
+                      </a>
+                    </li>
+                    <li class="flex">
+                      <a
+                        class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                        href="#"
+                      >
+                      <i class="fas fa-user-cog pr-3"></i>
+                        <span>Ustawienia</span>
+                      </a>
+                    </li>
+                    <li class="flex">
+                      <a
+                        class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                        href="#"
+                      >
+                      <i class="fas fa-sign-out-alt pr-3"></i>
+                        <span>Wyloguj</span>
+                      </a>
+                    </li>
+                  </ul>
+                </template>
+              </li>
+            </ul>
+          </div>
+        </header>
+        <%- include('./notyf'); -%>

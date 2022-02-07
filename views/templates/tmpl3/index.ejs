@@ -1,0 +1,49 @@
+<%- include('./nav.ejs') %> 
+<main class="my-8 ">
+    <div class="container mx-auto px-6">
+        <div class="mt-16">
+            <h3 class="text-gray-600 text-2xl font-medium">Sklep survival</h3>
+            <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6 ">
+                <% products.forEach(function(product){ %>
+                    <div class="w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden bg-white">
+                        <center><div class="flex items-center justify-center h-60 w-60 bg-cover" style="background-image: url('<%= product.image %>'); "></div></center>
+                        <div class="px-5 py-3">
+                            <h1 class="text-gray-700 uppercase"><%= product.name %></h1><br>
+                            <% if(product.lvlup_price == '0' && product.paypal_price == '0' && product.hotpay_price == '0' && product.hotpaysms_price == '0' && product.hotpaypsc_price == '0'){ %>
+                                <div class="alert alert-error">
+                                  <div class="flex-1">
+                                    <label>Administrator sklepu nie ustalil zadnej ceny dla tego produktu!</label>
+                                  </div>
+                                </div>
+                            <% }else{ %>
+                                <% if(payment[0].lvlup_enable == true){ %><span class="text-gray-500 mt-2">Cena <%= payment[0].lvlup_name %>: <b><%= product.lvlup_price %>zł</b></span><br><% } %> 
+                                <% if(payment[0].paypal_enable == true){ %><span class="text-gray-500 mt-2">Cena <%= payment[0].paypal_name %>: <b><%= product.paypal_price %>zł</b></span><br><% } %>
+                                <% if(payment[0].hotpay_enable == true){ %><span class="text-gray-500 mt-2">Cena <%= payment[0].hotpay_name %>: <b><%= product.hotpay_price %>zł</b></span><br><% } %>
+                                <% if(payment[0].hotpaysms_enable == true){ %><span class="text-gray-500 mt-2">Cena <%= payment[0].hotpaysms_name %>: <b><%= product.hotpaysms_price %>zł</b></span><br><% } %>
+                                <% if(payment[0].hotpaypsc_enable == true){ %><span class="text-gray-500 mt-2">Cena <%= payment[0].hotpaypsc_name %>: <b><%= product.hotpaypsc_price %>zł</b></span><br><% } %>
+                            <% } %> 
+                            <br>
+                            <center><a href="/shop/<%= result[0].id %>/buy/<%= product.productID %>" class="bg-green-500 hover:bg-green-700 text-white text-center py-2 px-4 rounded">Dokonaj zakupu</a></center><br>
+                        </div>
+                    </div>
+                <% }) %> 
+            </div>
+        </div>
+        <div class="mt-16">
+            <h3 class="text-gray-600 text-2xl font-medium">Ostatnie zakupy</h3>
+            <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6">
+                <% logs.forEach(function(pay){ %>
+                    <div class="w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden bg-white">
+                        <div class="px-5 py-3">
+                            <div style="float: left; padding-bottom: 10px;"><img src="https://minotar.net/avatar/<%= pay.nick %>/100.png" alt=""></div>
+                            <div style="float: left; padding-left: 30px;"><b><%= pay.nick %></b> <br> <span><%= pay.productName %></span></div>
+                        </div>
+                    </div>
+                <% }) %> 
+            </div>
+        </div>
+    </div>
+</main>
+      
+    </body>
+</html>

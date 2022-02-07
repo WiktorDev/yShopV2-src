@@ -1,0 +1,41 @@
+<%- include('../../includes/manage'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Ustawienia polaczenia</h1>
+    <br>
+    <div class="flex justify-center"><a class="btn btn-success flex justify-center">Sprawdz polaczenie</a></div>
+    <div class="flex">
+        <div class="flex-1 ..." style="margin: 40px">
+            <div class="card text-center shadow-2xl">
+                <div class="card-body">
+                    <form  class="card-body" action="/panel/manage/<%= result[0].id %>/settings/connection" method="POST" name="create">
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="IP serwera" class="input input-bordered" name="ip" value="<%= result[0].serverip %>" required>
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="number" placeholder="Port serwera" class="input input-bordered" name="port" value="<%= result[0].serverport %>" required>
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="number" placeholder="Port RCON" class="input input-bordered" name="port_rcon" value="<%= result[0].rconport %>" required>
+                            </div>
+                        </div>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="password" placeholder="Haslo RCON" class="input input-bordered" name="pass_rcon" value="<%= result[0].rconpassword %>" required>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button type="submit" class="btn btn-wide">Zapisz ustawienia</button>
+                        </div>
+                    </form>
+                </div>
+            </div> 
+        </div>
+    </div>
+</main>
+<%- include('../../includes/footer'); -%>

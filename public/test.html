@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title><%= result[0].title %></title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="/css/lib.css" type="text/css">
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="css/newstyle.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
+        <link rel="stylesheet" href="<%= result[0].shopcss %>">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav navbar-center" id="mySidenav">
+                        <li class="nav-item active">
+                            <a href="/" class="nav-link">Sklep</a>
+                        </li>
+                        <% nav.forEach(function(data){ %>
+                            <li class="nav-item active">
+                                <a href="<%= data.value %>" class="nav-link"><%= data.name %></a>
+                            </li>
+                        <% }) %> 
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <section class="bg-home" style="background-image: url('/img/2021-07-09_10.15.51.png'); height: 600px; z-index: 0"id="start">
+            <div class="container-fluid" style="text-align: center; z-index: 3">
+                <h1 class="text-white " style="font-size: 60px;"><%= result[0].title %></h1><br>
+                <% if(result[0].srv_status == false){ %>
+                    <h2 style="color: white; font-size: 26px;">Serwer aktualnie jest <span style="color: red; font-weight: bold;">OFFLINE</span></h2>
+                  <% }else{ %>
+                    <h2 style="color: white; font-size: 26px;">Aktualnie jest <b><%= result[0].srv_online %></b> graczy online</h2>
+                  <% } %> 
+            <button class="mt-4 btn btn-sm btn-success">Zrealizuj voucher</button>
+        </section>
+        <br><br>
+        <div id="content">
+            <% if(result[0].srv_status == false){ %>
+                <div class="alert alert-error" style="margin-left: 14.5rem; margin-right: 15rem; background-color: rgb(223, 80, 80); color: white;">
+                    <div class="flex-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+                      </svg> 
+                      <label>Nie mozna polaczyc sie z serwerem! Skontaktuj sie z administratorem sklepu</label>
+                    </div>
+                </div><br><br>
+            <% } %> 
+
+            <div class="flex justify-center items-center ">
+                <div class="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 space-y-4 md:space-y-0">
+                    <% products.forEach(function(product){ %>
+                        <div>
+                            <div class="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
+                                <div class="relative">
+                                  <center>
+                                    <img class="w-9/12 rounded-xl" src="<%= product.image %>"alt="Colors" />
+                                  </center>
+                                </div>
+                                <h1 class="mt-4 text-gray-800 text-3xl font-bold cursor-pointer"><%= product.name %></h1>
+                                <div class="my-4">
+                                  <div class="flex space-x-1 items-center">
+                                    <p><%= product.description %></p>
+                                  </div>
+                                  <label for="my-modal-<%= product.productID %>" class="mt-4 w-full btn btn-primary modal-button" >Zakup</label> 
+                                </div>
+                            </div>
+    
+                            <form action="">
+                                <input type="checkbox" id="my-modal-<%= product.productID %>" class="modal-toggle"> 
+                                <div class="modal">
+                                    <div class="modal-box">
+                                      <h1 style="text-align: center; font-size: 30PX;">Kupno przedmiotu</h1>
+                                      <p style="text-align: center; font-size: 20px">Kupujesz: <%= product.name %></p>
+                                      <br>
+                                      <div class="w-full mb-2">
+                                        <div class="form-control">
+                                            <input type="text" placeholder="Nick gracza" class="input input-bordered" name="nick" required>
+                                        </div>
+                                          <br>
+                                          <div id="demo"></div>
+                                          <div class="form-control">
+                                            <input type="range" max="10 min="1" class="range range-primary" name="count" id="count"> 
+                                          </div>
+                                      </div>
+                                      <br>
+                                      <div class=" form-control">
+                
+                                      </div>
+                                      <div class="modal-action">
+                                        <button type="submit" class="btn btn-primary">Płatność</button> 
+                                        <label for="my-modal" class="btn">Wyjdz</label>
+                                      </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <div class="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
+                                <div class="relative">
+                                  <center>
+                                    <img class="w-9/12 rounded-xl" src="<%= product.image %>"alt="Colors" />
+                                  </center>
+                                </div>
+                                <h1 class="mt-4 text-gray-800 text-3xl font-bold cursor-pointer"><%= product.name %></h1>
+                                <div class="my-4">
+                                  <div class="flex space-x-1 items-center">
+                                    <p><%= product.description %></p>
+                                  </div>
+                                  <label for="my-modal-<%= product.productID %>" class="mt-4 w-full btn btn-primary modal-button" >Zakup</label> 
+                                </div>
+                            </div>
+    
+                            <form action="">
+                                <input type="checkbox" id="my-modal-<%= product.productID %>" class="modal-toggle"> 
+                                <div class="modal">
+                                    <div class="modal-box">
+                                      <h1 style="text-align: center; font-size: 30PX;">Kupno przedmiotu</h1>
+                                      <p style="text-align: center; font-size: 20px">Kupujesz: <%= product.name %></p>
+                                      <br>
+                                      <div class="w-full mb-2">
+                                        <div class="form-control">
+                                            <input type="text" placeholder="Nick gracza" class="input input-bordered" name="nick" required>
+                                        </div>
+                                          <br>
+                                          <div id="demo"></div>
+                                          <div class="form-control">
+                                            <input type="range" max="10 min="1" class="range range-primary" name="count" id="count"> 
+                                          </div>
+                                      </div>
+                                      <br>
+                                      <div class=" form-control">
+                
+                                      </div>
+                                      <div class="modal-action">
+                                        <button type="submit" class="btn btn-primary">Płatność</button> 
+                                        <label for="my-modal" class="btn">Wyjdz</label>
+                                      </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    <% }) %>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="container  py-24 mx-auto">
+            <h1 class="text-center" style="font-size: 40px;">Ostatni kupujacy</h1><br>
+
+            
+            <div>
+                <div class="flex justify-center items-center ">
+                    <div class="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-5 gap-5 space-y-4 md:space-y-0">
+                        <% logs.forEach(function(pay){ %>
+                            <% if(pay.payed == true){ %>
+                                <div class="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
+                                    <img class="rounded-xl" style="margin-left: auto; margin-right: auto;" src="https://minotar.net/avatar/<%= pay.nick %>/100.png" />
+                                    <h2 class="title-font font-medium sm:text-3xl text-2xl text-black"><%= pay.nick %></h2>
+                                    <p class="leading-relaxed text-gray-600 font-bold"><%= pay.productName %></p>
+                                </div>
+                            <% } %> 
+                        <% }) %> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <div class="footer-alt py-3" >
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-center">
+                        <p class="mb-0">2021 © testowy | Powered by <a href="https://yshop.pl" target="_blank" style="color: white;">yshop.pl</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="http://test.item-shop.pl/js/jquery.min.js"></script>
+    <script src="http://test.item-shop.pl/js/bootstrap.bundle.min.js"></script>
+    <script src="http://test.item-shop.pl/js/app.js"></script>
+</html>

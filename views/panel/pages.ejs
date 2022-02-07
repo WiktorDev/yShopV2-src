@@ -1,0 +1,109 @@
+<%- include('../includes/manage'); -%>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Podstrony</h1>
+    <br>
+    <center><label for="my-modal-2" class="btn btn-primary modal-button">Dodaj podstrone</label> </center>
+    <input type="checkbox" id="my-modal-2" class="modal-toggle"> 
+    <br>
+    <div class="modal">
+        <div class="modal-box">
+            <form  action="/panel/manage/<%= result[0].id %>/addpage" method="POST">
+                <h1 style="text-align:center; font-size: 30px;">Dodawanie podstrony</h1><br>
+                <div class="alert alert-info">
+                    <div class="flex-1">
+                      <label>Jezeli chcesz skorzystac z szablonow ustaw pluginy <b><a href="/panel/manage<%= result[0].id %>/settings/additionals">tutaj</a></b></label>
+                    </div>
+                </div><br>
+                <div class="w-full mb-2">
+                  <div class="form-control">
+                    <input type="text" placeholder="Nazwa" class="input input-bordered" name="name" required>
+                  </div>
+                </div>
+                <div class="w-full mb-2">
+                    <div class="form-control">
+                        <select name="template" class="input input-bordered">
+                            <option value="none" selected disabled>Wybierz szablon</option>
+                            <option value="none">Brak gotowego szablonu</option>
+                            <option value="advban">Lista banow (AdvancedBan)</option>
+                            <option value="lbans">Lista banow (LiteBans)</option>
+                            <option value="ytops">Topki graczy (YourTops)</option>
+                        </select>
+                    </div>
+                </div>
+                <textarea id="summernote" name="content"></textarea>
+                <div class="modal-action">
+                  <button  type="submit" class="btn btn-primary">Dodaj</button> 
+                  <label for="my-modal-2" class="btn">Wyjdz</label>
+              </div>
+            </form>
+            <script>
+                $('#summernote').summernote({
+                  placeholder: 'Zawartosc strony...',
+                  tabsize: 2,
+                  height: 120,
+                  toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['codeview']]
+                  ]
+                });
+              </script>
+        </div>
+    </div>
+    <div class="flex">
+      <div class="flex-1 ..." style="margin: 40px">
+        <div class="card text-center shadow-2xl">
+            <div class="card-body">
+                <div class="overflow-x-auto ">
+                    <% if(!page[0]){ %>
+                        <div class="alert alert-error">
+                            <div class="flex-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+                              </svg> 
+                              <label>W tym sklepie nie utworzono zadnej podstrony!</label>
+                            </div>
+                        </div>
+                      <% }else{ %>
+                        <table class="table w-full ">
+                            <thead  class="bg-gray-100">
+                              <tr>
+                                <th>Nazwa</th> 
+                                <th>Szablon</th>
+                                <th>Data utworzenia</th>
+                                <th>Akcja</th>
+                              </tr>
+                            </thead> 
+                            <tbody >
+                              <% page.forEach(function(pageData){ %>
+                              <tr style="border-color: red;">
+                                <td><%= pageData.name %></td> 
+                                <td><%= pageData.template %></td>
+                                <td><% var txt = pageData.createDate %><% var timestamp = moment.unix(txt.substring(0, txt.length - 3)) %><%- timestamp.locale("pl").format('lll') %> </td>
+                                <td>
+                                    <a href="/panel/manage/<%= result[0].id %>/action/delpage/<%= pageData.id %>" class="btn btn-error"><i class="fad fa-trash"></i></a>
+                                    <a href="/panel/manage/<%= result[0].id %>/action/editpage/<%= pageData.id %>" class="btn btn-primary"><i class="fad fa-edit"></i></a>
+                                    <a href="/shop/<%= result[0].id %>/page/<%= pageData.name %>" class="btn btn-success"><i class="fad fa-external-link-alt"></i></a>
+                                </td>
+                              </tr>
+                              <% }) %>
+                            </tbody>
+                          </table>
+                    <% } %> 
+                </div>
+            </div>
+        </div> 
+      </div>
+    </div>
+</main>
+
+<%- include('../includes/footer'); -%>

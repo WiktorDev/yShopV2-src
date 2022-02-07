@@ -1,0 +1,191 @@
+<%- include('../includes/manage'); -%>
+<style>
+.step {
+  display: none;
+}
+.step.active {
+  display: block;
+}
+.form-group {
+  width: 100%;
+  margin-top: 20px;
+}
+button.next-btn,
+button.previous-btn,
+button.submit-btn {
+  float: right;
+  margin-top: 20px;
+  padding: 10px 30px;
+  border: none;
+  outline: none;
+
+  cursor: pointer;
+}
+button.previous-btn {
+  float: left;
+}
+button.submit-btn {
+  background-color: aquamarine;
+}
+</style>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Dodaj produkt</h1>
+    <div class="card text-center shadow-2xl" style="border-color: black; margin: 60px;">
+        <div class="card-body">
+            <form  class="card-body" action="/panel/manage/<%= result[0].id  %>/addproduct" method="POST" name="create" id="test" >
+                <div class="step step-1 active">
+                    <div class="w-full mb-2">
+                        <div class="form-control">
+                            <input type="text" placeholder="Nazwa produktu" class="input input-bordered" name="name" >
+                        </div>
+                    </div>
+                    <div class="w-full mb-2">
+                        <div class="form-control">
+                            <input type="url" placeholder="Zdjecie" class="input input-bordered" name="image" >
+                        </div>
+                    </div>
+                    <div class="w-full mb-2">
+                        <div class="form-control">
+                            <textarea class="textarea h-24 textarea-bordered" placeholder="Opis produktu" name="description"></textarea>
+                          </div>
+                    </div>
+                    <div class="w-full mb-2 ">
+                        <label for="" style="font-style: italic;">Zmienne: {player} - nick gracza wpisany do formularza | {count} - pokazuje ilosc z suwaka (Aktywne tylko gdy jest wlaczony suwak)</label>
+                        <div class="form-control">
+                            <input type="text" placeholder="Komenda" class="input input-bordered" name="cmd">
+                        </div>
+                    </div>
+                    <div class="w-full mb-2">
+                        <select class="select select-bordered w-full" id="select" onchange="updateItems(this)" name="select">
+                            <option value="1">Z suwakiem</option> 
+                            <option value="0" selected="selected">Bez suwaka</option> 
+                        </select>
+                        <div id="results"></div>
+                    </div>
+                    <div class="w-full mb-2">
+                        <div class="form-control">
+                            <input type="number" placeholder="Minimalna ilosc" class="input input-bordered" name="min" id="min" style="display:none">
+                        </div>
+                    </div>
+                    <div class="w-full mb-2">
+                        <div class="form-control">
+                            <input type="number" placeholder="Maksymalna ilosc" class="input input-bordered" name="max" id="max" style="display:none">
+                        </div>
+                    </div>
+                    <a class="btn btn-square next-btn" style="float: right; margin-top: 15px;"><i class="far fa-arrow-right"></i></a> 
+                </div>
+                <div class="step step-2">
+                    <% if(payment[0].paypal_enable == false && payment[0].lvlupsms_enable == false){ %>
+                        <div class="alert alert-error">
+                            <div class="flex-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+                              </svg> 
+                              <label>Zaden operator platnosci nie jest skonfigurowany! Kliknij <a href="/panel/manage/<%= result[0].id %>/settings/payments" style="color: blue; font-style: italic;">tutaj</a> aby to zmienic</label>
+                            </div>
+                        </div>
+                    <% } %>
+                    <div class="alert alert-info">
+                        <div class="flex-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+                          </svg> 
+                          <label>Aby wylaczyc dana platnosc ustaw wartosc na <b>0</b>, w przypadku SMS wybierz wartosc <b>Wylacz dla tego produktu</b> </label>
+                        </div>
+                    </div>
+                    <br>
+                    <% if (payment[0].paypal_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayPal" class="input input-bordered" name="paypal" >
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].lvlup_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena Lvlup Others" class="input input-bordered" name="lvlup" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].lvlupsms_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <select class="select select-bordered w-full" name="lvlup_sms">
+                                    <option disabled="disabled" selected="selected">Wybierz cene SMS LVLUP</option> 
+                                    <option value="1"> 71480 (1.23 zł)</option>
+                                    <option value="2"> 72480 (2.46 zł)</option>
+                                    <option value="3"> 73480 (3.69 zł)</option>
+                                    <option value="4"> 74480 (4.92 zł)</option>
+                                    <option value="5"> 75480 (6.15 zł)</option>
+                                    <option value="6"> 76480 (7.38 zł)</option>
+                                    <option value="7"> 79480 (11.07 zł)</option>
+                                    <option value="8"> 91400 (17.22 zł)</option>
+                                    <option value="9"> 91900 (23.37 zł)</option>
+                                    <option value="10"> 92022 (24.60 zł)</option>
+                                    <option value="11"> 92521 (30.75 zł)</option>
+                                    <option value="12"> 92550 (30.75 zł)</option>
+                                    <option value="13">Wyłącz dla tego produktu</option>
+                                </select>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].hotpay_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena HotPay" class="input input-bordered" name="hotpay" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].hotpaypsc_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena HotPay PSC" class="input input-bordered" name="hotpay_psc" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].hotpaysms_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena HotPay SMS" class="input input-bordered" name="hotpay_sms" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].pbl_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayByLink" class="input input-bordered" name="pbl" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].pblpsc_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayByLink PSC" class="input input-bordered" name="pbl_psc" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].pbldb_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayByLink DirectBilling" class="input input-bordered" name="pbl_db" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if (payment[0].pblsms_enable == true) {%>
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Cena PayByLink SMS" class="input input-bordered" name="pbl_sms" required>
+                            </div>
+                        </div>
+                    <% } %>
+                    <a class="btn btn-w previous-btn" style="float: left; margin-top: 15px;"><i class="far fa-arrow-left"></i></a>
+                    <button class="btn btn-wide submit-btn" type="submit">Dodaj produkt</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<script src="/js/addproduct.js"></script>
+<%- include('../includes/footer'); -%>

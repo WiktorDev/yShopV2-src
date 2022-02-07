@@ -1,0 +1,59 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://mdbootstrap.com/previews/mdb-ui-kit/sidenav/css/mdb.min.css" />
+        <script async defer data-website-id="242752ad-da4f-445d-928b-0ff281a1c0f7" src="https://umami.yshop.pl/umami.js"></script>
+        <title>Status</title>
+        <style>
+            body{
+                background-image: url('/img/img1.jpg');
+            }
+        </style>
+    </head>
+    <body>
+        <center>
+            <div style="margin-left: 4cm; margin-right: 4cm; margin-top: 7cm;">
+                <% if (messages.error) { %>
+                    <h1>Wystąpił błąd!</h1>
+                    <br>
+                    <hr>
+                    <div class="alert alert-danger" role="alert" style="background-color: rgb(223, 80, 80); color: white;">
+                        <%- messages.error %>
+                    </div>
+                <% } %>
+                
+                <% if (messages.success) { %>
+                    <h1>Sukces!</h1>
+                    <br>
+                    <hr>
+                    <div class="alert alert-success" role="alert" style="background-color: rgb(28, 160, 28); color: white;">
+                        <%- messages.success %>
+                    </div>
+                <% } %>
+                
+                <% if (messages.redirect || messages.redirect2) { %>
+                    <h1>Realizacja płatności...</h1>
+                    <title>Płatność</title>
+                    <br>
+                    <hr>
+                    <script>
+                        time = 3
+                        setInterval(function(){
+                            if(time < 1){
+                                window.location.replace("<%- messages.redirect %>")
+                            } else {
+                                time = time - 1
+                            }
+                            document.getElementById("timer").innerHTML = time;
+                        }, 1000)
+                    </script>
+                    <div class="alert alert-success" role="alert" style="background-color: rgb(28, 160, 28); color: white;">
+                        <%- messages.redirect2 %>
+                    </div>
+                <% } %>
+            </div>
+        </center>
+    </body>
+</html>

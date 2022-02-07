@@ -1,0 +1,365 @@
+<%- include('../../includes/manage'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Ustawienia platnosci</h1>
+    <br>
+    <div class="flex">
+      <div class="flex-1 ..." style="margin: 40px">
+        <div class="card text-center shadow-2xl">
+            <div class="card-body">
+                <div class="overflow-x-auto ">
+                    <table class="table w-full ">
+                      <thead  class="bg-gray-100">
+                        <tr>
+                          <th>Bramka</th> 
+                          <th>Wyswietlana nazwa</th> 
+                          <th>Status</th>
+                          <th>Akcja</th>
+                        </tr>
+                      </thead> 
+                      <tbody >
+                        <tr>
+                          <td>LvLUP Others</td> 
+                          <td><%= payment[0].lvlup_name %></td> 
+                          <% if (payment[0].lvlup_enable == false){ %>
+                            <td><div class="badge badge-error">WYLACZONE</div></td>
+                          <% }else{ %>
+                            <td><div class="badge badge-success">WLACZONE</div></td>
+                          <% } %>
+                        
+                          <td><a href="#lvlup" class="btn btn-sm btn-primary">Edytuj</a></td>
+                        </tr>
+                        <tr>
+                          <td>HotPay PSC</td> 
+                          <td><%= payment[0].hotpaypsc_name %></td> 
+                          <% if (payment[0].hotpaypsc_enable == false){ %>
+                            <td><div class="badge badge-error">WYLACZONE</div></td>
+                          <% }else{ %>
+                            <td><div class="badge badge-success">WLACZONE</div></td>
+                          <% } %>
+                          <td><a href="#hotpaypsc" class="btn btn-sm btn-primary">Edytuj</a></td>
+                        </tr>
+                        <tr>
+                          <td>HotPay pp/przelew</td> 
+                          <td><%= payment[0].hotpay_name %></td> 
+                          <% if (payment[0].hotpay_enable == false){ %>
+                            <td><div class="badge badge-error">WYLACZONE</div></td>
+                          <% }else{ %>
+                            <td><div class="badge badge-success">WLACZONE</div></td>
+                          <% } %>
+                          <td><a href="#hotpay" class="btn btn-sm btn-primary">Edytuj</a></td>
+                        </tr>
+                        <tr>
+                            <td>HotPay SMS</td> 
+                            <td>SMS</td> 
+                            <% if (payment[0].hotpaysms_enable == false){ %>
+                              <td><div class="badge badge-error">CHWILOWO NIEDOSTEPNE</div></td>
+                            <% }else{ %>
+                              <td><div class="badge badge-success">WLACZONE</div></td>
+                            <% } %>
+                            <td><a href="" class="btn btn-sm btn-primary" disabled>Edytuj</a></td>
+                        </tr>
+                        <tr>
+                            <td>PayPal</td> 
+                            <td><%= payment[0].paypal_name %></td> 
+                            <% if (payment[0].paypal_enable == false){ %>
+                              <td><div class="badge badge-error">WYLACZONE</div></td>
+                            <% }else{ %>
+                              <td><div class="badge badge-success">WLACZONE</div></td>
+                            <% } %>
+                            <td><a href="#paypal" class="btn btn-sm btn-primary">Edytuj</a></td>
+                        </tr>
+                        <tr>
+                          <td>PayByLink Transfer</td> 
+                          <td><%= payment[0].pbl_name %></td> 
+                          <% if (payment[0].pbl_enable == false){ %>
+                            <td><div class="badge badge-error">WYLACZONE</div></td>
+                          <% }else{ %>
+                            <td><div class="badge badge-success">WLACZONE</div></td>
+                          <% } %>
+                          <td><a href="#pbl" class="btn btn-sm btn-primary">Edytuj</a></td>
+                        </tr>
+                        <tr>
+                          <td>PayByLink PSC</td> 
+                          <td><%= payment[0].pblpsc_name %></td> 
+                          <% if (payment[0].pblpsc_enable == false){ %>
+                            <td><div class="badge badge-error">WYLACZONE</div></td>
+                          <% }else{ %>
+                            <td><div class="badge badge-success">WLACZONE</div></td>
+                          <% } %>
+                          <td><a href="#pblpsc" class="btn btn-sm btn-primary">Edytuj</a></td>
+                        </tr>
+                        <tr>
+                          <td>PayByLink DirectBilling</td> 
+                          <td><%= payment[0].pbldb_name %></td> 
+                          <% if (payment[0].pbldb_enable == false){ %>
+                            <td><div class="badge badge-error">WYLACZONE</div></td>
+                          <% }else{ %>
+                            <td><div class="badge badge-success">WLACZONE</div></td>
+                          <% } %>
+                          <td><a href="#pbldb" class="btn btn-sm btn-primary">Edytuj</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div id="pbldb" class="modal">
+                      <div class="modal-box">
+                        <form class="card-body" action="/panel/manage/<%= result[0].id %>/panel/settings/payments/pbldb" method="POST" name="create">
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Wyswietlana nazwa" class="input input-bordered" name="name" value="<%= payment[0].pbldb_name %>" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Login" class="input input-bordered" value="<%= payment[0].pbldb_login %>" name="login" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="password" placeholder="Haslo" class="input input-bordered" value="<%= payment[0].pbldb_password %>" name="password" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Hash" class="input input-bordered" value="<%= payment[0].pbldb_hash %>" name="hash" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <label class="cursor-pointer input input-bordered label">
+                                  <span class="label-text">Status on/off</span> 
+                                  <input id="status_pbl" type="checkbox" <% if(payment[0].hotpaypsc_enable == true){%>checked<% } %> <% if(payment[0].hotpaypsc_enable == true){%>value="checkbox"<% } %> class="toggle" name="status_pbl">
+                                </label>
+                            </div>
+                          </div>
+                          <div class="modal-action">
+                            <button class="btn btn-sm btn-primary" type="submit">Wyslij zapytanie</button> 
+                            <a href="" class="btn btn-sm">Wyjdz</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div id="pblpsc" class="modal">
+                      <div class="modal-box">
+                        <form class="card-body" action="/panel/manage/<%= result[0].id %>/panel/settings/payments/pblpsc" method="POST" name="create">
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Wyswietlana nazwa" class="input input-bordered" name="name" value="<%= payment[0].pblpsc_name %>" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="ID uzytkownika" class="input input-bordered" value="<%= payment[0].pblpsc_userid %>" name="userid" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="ID uslugi" class="input input-bordered" value="<%= payment[0].pblpsc_serviceid %>" name="serviceid" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="PIN" class="input input-bordered" value="<%= payment[0].pblpsc_pin %>" name="pin" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <label class="cursor-pointer input input-bordered label">
+                                  <span class="label-text">Status on/off</span> 
+                                  <input id="status_pbl" type="checkbox" <% if(payment[0].hotpaypsc_enable == true){%>checked<% } %> <% if(payment[0].hotpaypsc_enable == true){%>value="checkbox"<% } %> class="toggle" name="status_pbl">
+                                </label>
+                            </div>
+                          </div>
+                          <div class="modal-action">
+                            <button class="btn btn-sm btn-primary" type="submit">Wyslij zapytanie</button> 
+                            <a href="" class="btn btn-sm">Wyjdz</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div id="pbl" class="modal">
+                      <div class="modal-box">
+                        <form class="card-body" action="/panel/manage/<%= result[0].id %>/panel/settings/payments/pbl" method="POST" name="create">
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Wyswietlana nazwa" class="input input-bordered" name="name" value="<%= payment[0].pbl_name %>" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="ID sklepu" class="input input-bordered" value="<%= payment[0].pbl_shopid %>" name="shopid" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="text" placeholder="Hash" class="input input-bordered" value="<%= payment[0].pbl_hash %>" name="hash" required>
+                            </div>
+                          </div>
+                          <div class="w-full mb-2">
+                            <div class="form-control">
+                                <label class="cursor-pointer input input-bordered label">
+                                  <span class="label-text">Status on/off</span> 
+                                  <input id="status_pbl" type="checkbox" <% if(payment[0].hotpaypsc_enable == true){%>checked<% } %> <% if(payment[0].hotpaypsc_enable == true){%>value="checkbox"<% } %> class="toggle" name="status_pbl">
+                                </label>
+                            </div>
+                          </div>
+                          <div class="modal-action">
+                            <button class="btn btn-sm btn-primary" type="submit">Wyslij zapytanie</button> 
+                            <a href="" class="btn btn-sm">Wyjdz</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div id="hotpaypsc" class="modal">
+                      <div class="modal-box">
+                        <div class="alert alert-info">
+                          <div class="flex-1">
+                            <label>Aby platnosci dzialaly poprawnie nalezy ustawic adres notyfikacji w panelu HotPay na:<br><span style="font-weight: bold;">https://yshop.pl/notyfication/hotpaypsc/<%= result[0].id %></span></label>
+                          </div>
+                        </div>
+                          <form  class="card-body" action="/panel/manage/<%= result[0].id %>/panel/settings/payments/hotpaypsc" method="POST" name="create">
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <input type="text" placeholder="Wyswietlana nazwa" class="input input-bordered" name="name" value="<%= payment[0].hotpaypsc_name %>" required>
+                                  </div>
+                              </div>
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <input type="text" placeholder="Sekret HotPay" class="input input-bordered" value="<%= payment[0].hotpaypsc_secret %>" name="secret" required>
+                                  </div>
+                              </div>
+                              <div class="w-full mb-2">
+                                <div class="form-control">
+                                  <% var bytes  = CryptoJS.AES.decrypt(payment[0].hotpaypsc_notification, 'ScgscJsDepcPqA2vhTJjd4FGN3kNEKY25Mf5skDcjLkwjgD67WBjx3PpDLbgD6j7YKuMND7jxarkEzhU3jstbudQUQgMNrqbf5Np') %> 
+                                  <input type="password" placeholder="Haslo notyfikacji" class="input input-bordered" name="password" value="<%= bytes.toString(CryptoJS.enc.Utf8) %>" required>
+                                </div>
+                              </div> 
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <label class="cursor-pointer input input-bordered label">
+                                        <span class="label-text">Status on/off</span> 
+                                        <input id="status_pp" type="checkbox" <% if(payment[0].hotpaypsc_enable == true){%>checked<% } %> <% if(payment[0].hotpaypsc_enable == true){%>value="checkbox"<% } %> class="toggle" name="status_hpaypsc">
+                                      </label>
+                                  </div>
+                              </div>
+                              <div class="modal-action">
+                                  <button class="btn btn-sm btn-primary" type="submit">Wyslij zapytanie</button> 
+                                  <a href="" class="btn btn-sm">Wyjdz</a>
+                              </div>
+                          </form>
+                      </div>
+                    </div>
+                    <div id="hotpay" class="modal">
+                      <div class="modal-box">
+                        <div class="alert alert-info">
+                          <div class="flex-1">
+                            <label>Aby platnosci dzialaly poprawnie nalezy ustawic adres notyfikacji w panelu HotPay na:<br><span style="font-weight: bold;">https://yshop.pl/notyfication/hotpay/<%= result[0].id %></span></label>
+                          </div>
+                        </div>
+                          <form  class="card-body" action="/panel/manage/<%= result[0].id %>/panel/settings/payments/hotpay" method="POST" name="create">
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <input type="text" placeholder="Wyswietlana nazwa" class="input input-bordered" name="name" value="<%= payment[0].hotpay_name %>" required>
+                                  </div>
+                              </div>
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <input type="text" placeholder="Sekret HotPay" class="input input-bordered" value="<%= payment[0].hotpay_secret %>" name="secret" required>
+                                  </div>
+                              </div>
+                              <div class="w-full mb-2">
+                                <div class="form-control">
+                                  <% var bytes  = CryptoJS.AES.decrypt(payment[0].hotpay_notification, 'ScgscJsDepcPqA2vhTJjd4FGN3kNEKY25Mf5skDcjLkwjgD67WBjx3PpDLbgD6j7YKuMND7jxarkEzhU3jstbudQUQgMNrqbf5Np') %> 
+                                  <input type="password" placeholder="Haslo notyfikacji" class="input input-bordered" name="password" value="<%= bytes.toString(CryptoJS.enc.Utf8) %>" required>
+                                </div>
+                              </div> 
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <label class="cursor-pointer input input-bordered label">
+                                        <span class="label-text">Status on/off</span> 
+                                        <input id="status_pp" type="checkbox" <% if(payment[0].hotpay_enable == true){%>checked<% } %> <% if(payment[0].hotpay_enable == true){%>value="checkbox"<% } %> class="toggle" name="status_pp">
+                                      </label>
+                                  </div>
+                              </div>
+                              <div class="modal-action">
+                                  <button class="btn btn-sm btn-primary" type="submit">Wyslij zapytanie</button> 
+                                  <a href="" class="btn btn-sm">Wyjdz</a>
+                              </div>
+                          </form>
+                      </div>
+                    </div>
+                    <div id="paypal" class="modal">
+                      <div class="modal-box">
+                          <form  class="card-body" action="/panel/manage/<%= result[0].id %>/panel/settings/payments/paypal" method="POST" name="create">
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <input type="text" placeholder="Wyswietlana nazwa" class="input input-bordered" name="name" value="<%= payment[0].paypal_name %> "required>
+                                  </div>
+                              </div>
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <input type="email" placeholder="E-mail" class="input input-bordered" value="<%= payment[0].paypal_email %>"name="email" required>
+                                  </div>
+                              </div>
+                              <div class="w-full mb-2">
+                                <div class="form-control">
+                                    <input type="text" placeholder="Client ID" class="input input-bordered" name="clientID" value="<%= payment[0].paypal_clientID %>" required>
+                                </div>
+                              </div> 
+                              <div class="w-full mb-2">
+                                <div class="form-control">
+                                    <input type="text" placeholder="Client Secret" class="input input-bordered" name="clientSecret" value="<%= payment[0].paypal_clientSecret %>" required>
+                                </div>
+                              </div>
+
+                              <div class="w-full mb-2">
+                                  <div class="form-control">
+                                      <label class="cursor-pointer input input-bordered label">
+                                        <span class="label-text">Status on/off</span> 
+                                        <input id="status_pp" type="checkbox" <% if(payment[0].paypal_enable == true){%>checked<% } %> <% if(payment[0].paypal_enable == true){%>value="checkbox"<% } %> class="toggle" name="status_pp">
+                                      </label>
+                                  </div>
+                              </div>
+                              <div class="modal-action">
+                                  <button class="btn btn-sm btn-primary" type="submit">Wyslij zapytanie</button> 
+                                  <a href="" class="btn btn-sm">Wyjdz</a>
+                              </div>
+                          </form>
+                      </div>
+                    </div>
+                <div id="lvlup" class="modal">
+                  <div class="modal-box">
+                    <a href="" style="float: right;"><i class="far fa-times"></i></a>
+                      <form  class="card-body" action="/panel/manage/<%= result[0].id %>/panel/settings/payments/lvlup" method="POST" name="create">
+                          <div class="w-full mb-2">
+                              <div class="form-control">
+                                  <input type="text" placeholder="Wyswietlana nazwa" class="input input-bordered" value="<%= payment[0].lvlup_name %>" name="name" required>
+                              </div>
+                          </div>
+                          <div class="w-full mb-2">
+                              <div class="form-control">
+                                  <input type="text" placeholder="Klucz API" class="input input-bordered" name="apikey" value="<%= payment[0].lvlup_apikey %>" required>
+                              </div>
+                          </div>
+                          <div class="w-full mb-2">
+                              <div class="form-control">
+                                  <label class="cursor-pointer input input-bordered label">
+                                    <span class="label-text">Status on/off</span> 
+                                    <input id="status_lvlup" type="checkbox" <% if(payment[0].lvlup_enable == true){%>checked<% } %> <% if(payment[0].lvlup_enable == true){%>value="checkbox"<% } %> class="toggle" name="status_lvlup">
+                                  </label>
+                              </div>
+                          </div>
+                          <div class="modal-action">
+                              <button class="btn btn-sm btn-primary " style="float: center;" type="submit">Wyslij zapytanie</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+                </div>
+            </div>
+        </div> 
+      </div>
+    </div>
+</main>
+<script src="/js/settings.js"></script>
+<%- include('../../includes/footer'); -%>

@@ -1,0 +1,57 @@
+<%- include('../../includes/sidebar'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Twoje zgloszenia</h1>
+    <br>
+    <div class="flex">
+      <div class="flex-1 ..." style="margin: 40px">
+        <div class="card text-center shadow-2xl">
+            <div class="card-body">
+                <div class="overflow-x-auto ">
+                    <% if(!tickets[0]){ %>
+                        <div class="alert alert-error">
+                            <div class="flex-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+                              </svg> 
+                              <label>Nie masz zadnych otwartych zgloszen! Zgloszenie mozesz otworzyc <a href="/panel/tickets" style="color:blue; font-style: italic;">tutaj</a></label>
+                            </div>
+                        </div>
+                      <% }else{ %>
+                        <table class="table w-full ">
+                            <thead  class="bg-gray-100">
+                              <tr>
+                                <th>ID</th> 
+                                <th>Temat</th> 
+                                <th>Kategoria</th>
+                                <th>Status</th>
+                                <th>Data otworzenia</th>
+                                <th>Akcja</th>
+                              </tr>
+                            </thead> 
+                            <tbody >
+                              <% tickets.forEach(function(data){ %>
+                              <tr style="border-color: red;">
+                                <td><%= data.id %></td> 
+                                <td><%= data.subject %></td> 
+                                <td><%= data.category %></td>
+                                <% if(data.status == "open"){ %>
+                                  <td><div class="badge badge-success">OTWORZONE</div></td>
+                                <% }else{ %>
+                                  <td><div class="badge badge-error">ZAMKNIETE</div></td>
+                                 <% } %> 
+                                <td><% var txt = data.openDate %><% var timestamp = moment.unix(txt.substring(0, txt.length - 3)) %><%- timestamp.locale("pl").format('lll') %> </td>
+                                <td><button class="btn btn-sm">Wiecej</button></td>
+                              </tr>
+                              <% }) %>
+                            </tbody>
+                          </table>
+                    <% } %> 
+                </div>
+            </div>
+        </div> 
+      </div>
+    </div>
+</main>
+
+<%- include('../../includes/footer'); -%>

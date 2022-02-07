@@ -1,0 +1,76 @@
+<%- include('../../includes/manage'); -%>
+<main class="h-full pb-16 overflow-y-auto">
+    <br>
+    <h1 style="text-align:center; font-size: 40px;">Ustawienia wygladu</h1>
+    <br>
+    <div class="flex-1 ..." style="margin-left: 40px;margin-right: 40px">
+        <div class="alert alert-info">
+            <div class="flex-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+              </svg> 
+              <label>Chcesz wlasny szablon sklepu? Napisz do nas lub utworz zgloszenie <a href="/panel/support" style="font-style: italic; color: blue">tutaj</a></label>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="flex">
+        <div class="flex-1 ..." style="margin: 40px">
+            <div class="card text-center shadow-2xl">
+                <div class="card-body">
+                    <form  action="/panel/manage/<%= result[0].id %>/settings/appearance/submit" method="POST" name="create">
+                        <div class="w-full mb-2">
+                            <div class="form-control">
+                                <input type="url" placeholder="Link do styli, skorzystaj z https://hosting.wiktor.tech" class="input input-bordered" name="css" value="<%= result[0].shopcss %>" required>
+                            </div>
+                            <br>
+                            <iframe src="https://hosting.wiktor.tech/" width=100% height="300px" frameborder="0"></iframe>
+                        </div>
+                        <% if(result[0].theme == "light"){ %>
+                            <div class="form-control">
+                                <label class="cursor-pointer label">
+                                  <span class="label-text">Szablon #2</span> 
+                                  <input type="radio" name="theme" checked="checked" class="radio" value="light">
+                                </label>
+                            </div> 
+                            <div class="form-control">
+                                <label class="cursor-pointer label">
+                                  <span class="label-text">Szablon #1 (Domyslny)</span> 
+                                  <input type="radio" name="theme"  class="radio" value="dark">
+                                </label>
+                            </div> 
+                        <% }else{ %>
+                            <div class="form-control">
+                                <label class="cursor-pointer label">
+                                  <span class="label-text">Szablon #2</span> 
+                                  <input type="radio" name="theme" class="radio" value="light">
+                                </label>
+                            </div> 
+                            <div class="form-control">
+                                <label class="cursor-pointer label">
+                                  <span class="label-text">Szablon #1 (Domyslny)</span> 
+                                  <input type="radio" name="theme" checked="checked"  class="radio" value="dark">
+                                </label>
+                            </div> 
+                        <% } %> 
+
+                    </form>
+                    <div class="card-actions">
+                        <script>
+                            function create1(){
+                                setTimeout(function(){
+                                    document.forms['create'].submit();
+                                }, 2000);
+                                var btn = document.getElementById('btnsubmit');
+                                btn.className='btn btn-wide loading';
+                                btn.innerHTML='Trwa zapisywanie...';
+                            }
+                        </script>
+                        <button id="btnsubmit" class="btn btn-wide" onClick="create1();">Zapisz ustawienia</button>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</main>
+<%- include('../../includes/footer'); -%>
